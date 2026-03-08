@@ -14,7 +14,7 @@ function App() {
   
       console.log("Sending question:", message);
   
-      const res = await fetch("https://ai-devops-agent.onrender.com/ask", {
+      const res = await fetch("https://ai-devops-agent-g5tq.onrender.com/ask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
