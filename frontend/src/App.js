@@ -10,7 +10,7 @@ function App() {
 
   const sendMessage = async () => {
 
-    const res = await fetch("http://localhost:3000/ask", {
+    const res = await fetch("https://ai-devops-agent-g5tq.onrender.com/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
