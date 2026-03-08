@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { OpenAI } = require("openai");
@@ -56,7 +57,6 @@ app.post("/ask", (req, res) => {
 //   }
 
 // });
-require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
