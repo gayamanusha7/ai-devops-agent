@@ -10,17 +10,30 @@ function App() {
 
   const sendMessage = async () => {
 
-    const res = await fetch("https://ai-devops-agent.onrender.com/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ question: message })
-    });
-
-    const data = await res.json();
-    setResponse(data);
-
+    try {
+  
+      console.log("Sending question:", message);
+  
+      const res = await fetch("https://ai-devops-agent.onrender.com/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question: message })
+      });
+  
+      const data = await res.json();
+  
+      console.log("Response from backend:", data);
+  
+      setResponse(data);
+  
+    } catch (error) {
+  
+      console.error("Error calling backend:", error);
+  
+    }
+  
   };
 
   if (!isAuthenticated) {
@@ -50,8 +63,9 @@ function App() {
       </button>
 
       <div style={{marginTop:20}}>
-
         <input
+          id="devops-question"
+          name="devops-question"
           style={{width:"300px", padding:"10px"}}
           value={message}
           onChange={(e)=>setMessage(e.target.value)}
