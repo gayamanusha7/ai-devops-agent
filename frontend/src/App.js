@@ -7,13 +7,17 @@ function App() {
 
   const [message, setMessage] = useState("");
   const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([]);
 
   const sendMessage = async () => {
 
+    if (!message) return;
+
     try {
-  
-      console.log("Sending:", message);
-  
+
+      setLoading(true);
+
       const res = await fetch("https://ai-devops-agent-g5tq.onrender.com/ask", {
         method: "POST",
         headers: {
@@ -21,34 +25,56 @@ function App() {
         },
         body: JSON.stringify({ question: message })
       });
-  
+
       const data = await res.json();
-  
-      console.log("Response:", data);
-  
+
       setResponse(data);
-  
+
+      setHistory([...history, { question: message, answer: data }]);
+
+      setMessage("");
+
+      setLoading(false);
+
     } catch (error) {
+
       console.error("Error:", error);
+      setLoading(false);
+
     }
-  
+
   };
 
   if (!isAuthenticated) {
     return (
-      <div style={{padding:40}}>
+      <div style={{ padding: 40 }}>
+
         <h1>AI DevOps Agent 🤖</h1>
+
+        <p style={{ color: "green" }}>
+          Agent Status: Connected
+        </p>
+
+        <p>
+          Secure AI DevOps Assistant powered by Auth0
+        </p>
+
         <button onClick={() => loginWithRedirect()}>
           Login with Auth0
         </button>
+
       </div>
     );
   }
 
   return (
-    <div style={{padding:40}}>
+    <div style={{ padding: 40 }}>
 
       <h1>AI DevOps Agent 🤖</h1>
+
+      <p style={{ color: "green" }}>
+        Agent Status: Connected
+      </p>
 
       <p>Welcome {user.name}</p>
 
@@ -60,18 +86,19 @@ function App() {
         Logout
       </button>
 
-      <div style={{marginTop:20}}>
+      <div style={{ marginTop: 20 }}>
+
         <input
           id="devops-question"
           name="devops-question"
-          style={{width:"300px", padding:"10px"}}
+          style={{ width: "300px", padding: "10px" }}
           value={message}
-          onChange={(e)=>setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value)}
           placeholder="Ask DevOps question"
         />
 
         <button
-          style={{marginLeft:"10px", padding:"10px"}}
+          style={{ marginLeft: "10px", padding: "10px" }}
           onClick={sendMessage}
         >
           Ask
@@ -79,9 +106,40 @@ function App() {
 
       </div>
 
-      <div style={{marginTop:30}}>
+      {loading && (
+        <p style={{ marginTop: 20 }}>
+          Agent is thinking...
+        </p>
+      )}
+
+      <div style={{ marginTop: 30 }}>
+
         <b>Agent Response:</b>
         <p>{response}</p>
+
+      </div>
+
+      <div style={{ marginTop: 40 }}>
+
+        <h3>Conversation History</h3>
+
+        {history.map((item, index) => (
+          <div key={index} style={{ marginBottom: 10 }}>
+            <p><b>User:</b> {item.question}</p>
+            <p><b>Agent:</b> {item.answer}</p>
+          </div>
+        ))}
+
+      </div>
+
+      <div style={{ marginTop: 40 }}>
+
+        <h3>Architecture</h3>
+
+        <p>
+          React Frontend → Auth0 Authentication → Node Backend → AI DevOps Agent
+        </p>
+
       </div>
 
     </div>
