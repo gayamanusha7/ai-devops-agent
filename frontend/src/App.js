@@ -12,7 +12,7 @@ function App() {
 
     try {
   
-      console.log("Sending question:", message);
+      console.log("Sending:", message);
   
       const res = await fetch("https://ai-devops-agent-g5tq.onrender.com/ask", {
         method: "POST",
@@ -24,14 +24,12 @@ function App() {
   
       const data = await res.json();
   
-      console.log("Response from backend:", data);
+      console.log("Response:", data);
   
       setResponse(data);
   
     } catch (error) {
-  
-      console.error("Error calling backend:", error);
-  
+      console.error("Error:", error);
     }
   
   };
