@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import "./App.css";
 
 function App() {
 
@@ -47,98 +48,106 @@ function App() {
 
   if (!isAuthenticated) {
     return (
-      <div style={{ padding: 40 }}>
+      <div className="App">
+        <div className="container">
 
-        <h1>AI DevOps Agent 🤖</h1>
+          <h1 className="title">🤖 AI DevOps Agent</h1>
+          <p className="subtitle">
+            Secure DevOps Assistant powered by Auth0
+          </p>
 
-        <p style={{ color: "green" }}>
-          Agent Status: Connected
-        </p>
+          <span className="status">● Agent Connected</span>
 
-        <p>
-          Secure AI DevOps Assistant powered by Auth0
-        </p>
+          <button className="ask-btn" onClick={() => loginWithRedirect()}>
+            Login with Auth0
+          </button>
 
-        <button onClick={() => loginWithRedirect()}>
-          Login with Auth0
-        </button>
-
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: 40 }}>
+    <div className="App">
 
-      <h1>AI DevOps Agent 🤖</h1>
+      <div className="container">
 
-      <p style={{ color: "green" }}>
-        Agent Status: Connected
-      </p>
+        <h1 className="title">🤖 AI DevOps Agent</h1>
+        <p className="subtitle">Secure DevOps Assistant powered by Auth0</p>
 
-      <p>Welcome {user.name}</p>
+        <span className="status">● Agent Connected</span>
 
-      <button
-        onClick={() =>
-          logout({ logoutParams: { returnTo: window.location.origin } })
-        }
-      >
-        Logout
-      </button>
-
-      <div style={{ marginTop: 20 }}>
-
-        <input
-          id="devops-question"
-          name="devops-question"
-          style={{ width: "300px", padding: "10px" }}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Ask DevOps question"
-        />
+        <p>Welcome {user.name}</p>
 
         <button
-          style={{ marginLeft: "10px", padding: "10px" }}
-          onClick={sendMessage}
+          className="ask-btn"
+          onClick={() =>
+            logout({ logoutParams: { returnTo: window.location.origin } })
+          }
         >
-          Ask
+          Logout
         </button>
 
-      </div>
+        <div className="input-row">
 
-      {loading && (
-        <p style={{ marginTop: 20 }}>
-          Agent is thinking...
-        </p>
-      )}
+          <input
+            className="input-box"
+            id="devops-question"
+            name="devops-question"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Ask DevOps question"
+          />
 
-      <div style={{ marginTop: 30 }}>
+          <button
+            className="ask-btn"
+            onClick={sendMessage}
+          >
+            Ask
+          </button>
 
-        <b>Agent Response:</b>
-        <p>{response}</p>
+        </div>
 
-      </div>
+        {loading && (
+          <p style={{ marginTop: 20 }}>
+            Agent is thinking...
+          </p>
+        )}
 
-      <div style={{ marginTop: 40 }}>
+        <div className="response">
 
-        <h3>Conversation History</h3>
+          <b>Agent Response:</b>
+          <p>{response}</p>
 
-        {history.map((item, index) => (
-          <div key={index} style={{ marginBottom: 10 }}>
-            <p><b>User:</b> {item.question}</p>
-            <p><b>Agent:</b> {item.answer}</p>
-          </div>
-        ))}
+        </div>
 
-      </div>
+        <div className="history">
 
-      <div style={{ marginTop: 40 }}>
+          <h3>Conversation</h3>
 
-        <h3>Architecture</h3>
+          {history.map((item, index) => (
+            <div key={index}>
 
-        <p>
+              <div className="message-user">
+                <b>You:</b> {item.question}
+              </div>
+
+              <div className="message-agent">
+                <b>Agent:</b> {item.answer}
+              </div>
+
+            </div>
+          ))}
+
+        </div>
+
+        <div className="architecture">
+
+          <h3>Architecture</h3>
+
           React Frontend → Auth0 Authentication → Node Backend → AI DevOps Agent
-        </p>
+
+        </div>
 
       </div>
 
