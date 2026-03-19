@@ -117,7 +117,9 @@ function App() {
         <div className="response">
 
           <b>Agent Response:</b>
-          <p>{response}</p>
+          <pre style={{whiteSpace: "pre-wrap"}}>
+            {response}
+          </pre>
 
         </div>
 
