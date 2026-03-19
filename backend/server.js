@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const { OpenAI } = require("openai");
@@ -8,21 +9,32 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 🔐 OpenAI setup
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
+// ✅ Health check route
 app.get("/", (req, res) => {
   res.send("AI DevOps Agent Running 🚀");
 });
 
+// 🚀 MAIN API
 app.post("/ask", async (req, res) => {
 
   const question = req.body.question.toLowerCase();
 
-  // 🔥 SIMULATED DEVOPS ACTIONS
+  // 🔥 SMART DEVOPS ACTION DETECTION
 
-  if (question.includes("trigger pipeline")) {
+  // PIPELINE
+  if (
+    question.includes("pipeline") &&
+    (
+      question.includes("trigger") ||
+      question.includes("run") ||
+      question.includes("start")
+    )
+  ) {
     return res.json(`
 ✅ Pipeline Triggered
 
@@ -37,7 +49,11 @@ Logs:
 `);
   }
 
-  if (question.includes("deploy")) {
+  // DEPLOY
+  if (
+    question.includes("deploy") ||
+    question.includes("deployment")
+  ) {
     return res.json(`
 🚀 Deployment Started
 
@@ -51,7 +67,11 @@ Steps:
 `);
   }
 
-  if (question.includes("rollback")) {
+  // ROLLBACK
+  if (
+    question.includes("rollback") ||
+    question.includes("revert")
+  ) {
     return res.json(`
 ⏪ Rollback Initiated
 
@@ -64,7 +84,7 @@ Status: Rolling back...
 `);
   }
 
-  // 🤖 AI fallback (REAL AI)
+  // 🤖 AI FALLBACK (REAL AI)
 
   try {
 
@@ -73,7 +93,8 @@ Status: Rolling back...
       messages: [
         {
           role: "system",
-          content: "You are a senior DevOps engineer. Give clear, practical answers with commands when needed."
+          content:
+            "You are a senior DevOps engineer. Give clear, practical answers with commands when needed."
         },
         {
           role: "user",
@@ -82,18 +103,22 @@ Status: Rolling back...
       ]
     });
 
-    res.json(response.choices[0].message.content);
+    const answer = response.choices[0].message.content;
+
+    res.json(answer);
 
   } catch (error) {
 
-    console.error(error);
+    console.error("AI Error:", error);
     res.status(500).send("AI Error");
 
   }
 
 });
 
+// 🌐 Server start
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
