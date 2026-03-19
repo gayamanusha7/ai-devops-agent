@@ -18,7 +18,53 @@ app.get("/", (req, res) => {
 
 app.post("/ask", async (req, res) => {
 
-  const question = req.body.question;
+  const question = req.body.question.toLowerCase();
+
+  // 🔥 SIMULATED DEVOPS ACTIONS
+
+  if (question.includes("trigger pipeline")) {
+    return res.json(`
+✅ Pipeline Triggered
+
+Project: ai-devops-agent
+Branch: main
+Status: Running...
+
+Logs:
+✔ Build started
+✔ Running tests
+✔ Deployment in progress
+`);
+  }
+
+  if (question.includes("deploy")) {
+    return res.json(`
+🚀 Deployment Started
+
+Environment: Production
+Status: Deploying...
+
+Steps:
+✔ Build complete
+✔ Containers created
+✔ Deployment in progress
+`);
+  }
+
+  if (question.includes("rollback")) {
+    return res.json(`
+⏪ Rollback Initiated
+
+Target Version: Previous stable release
+Status: Rolling back...
+
+✔ Reverting deployment
+✔ Restarting services
+✔ System stable
+`);
+  }
+
+  // 🤖 AI fallback (REAL AI)
 
   try {
 
@@ -27,8 +73,7 @@ app.post("/ask", async (req, res) => {
       messages: [
         {
           role: "system",
-          content:
-            "You are an expert DevOps assistant. Help with CI/CD pipelines, GitLab, deployments, Kubernetes, Docker, monitoring and troubleshooting."
+          content: "You are a senior DevOps engineer. Give clear, practical answers with commands when needed."
         },
         {
           role: "user",
@@ -37,9 +82,7 @@ app.post("/ask", async (req, res) => {
       ]
     });
 
-    const answer = response.choices[0].message.content;
-
-    res.json(answer);
+    res.json(response.choices[0].message.content);
 
   } catch (error) {
 
