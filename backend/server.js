@@ -22,68 +22,71 @@ app.get("/", (req, res) => {
 // 🚀 MAIN API
 app.post("/ask", async (req, res) => {
 
-  const question = req.body.question.toLowerCase();
-
-  // 🔥 SMART DEVOPS ACTION DETECTION
-
-  // PIPELINE
-  if (
-    question.includes("pipeline") &&
-    (
-      question.includes("trigger") ||
-      question.includes("run") ||
-      question.includes("start")
-    )
-  ) {
-    return res.json(`
-✅ Pipeline Triggered
-
-Project: ai-devops-agent
-Branch: main
-Status: Running...
-
-Logs:
-✔ Build started
-✔ Running tests
-✔ Deployment in progress
-`);
-  }
-
-  // DEPLOY
-  if (
-    question.includes("deploy") ||
-    question.includes("deployment")
-  ) {
-    return res.json(`
-🚀 Deployment Started
-
-Environment: Production
-Status: Deploying...
-
-Steps:
-✔ Build complete
-✔ Containers created
-✔ Deployment in progress
-`);
-  }
-
-  // ROLLBACK
-  if (
-    question.includes("rollback") ||
-    question.includes("revert")
-  ) {
-    return res.json(`
-⏪ Rollback Initiated
-
-Target Version: Previous stable release
-Status: Rolling back...
-
-✔ Reverting deployment
-✔ Restarting services
-✔ System stable
-`);
-  }
-
+  const question = req.body.question.toLowerCase().trim();
+    // 🔥 SMART DEVOPS ACTION DETECTION
+    
+    // PIPELINE
+    if (
+      question.includes("pipeline") &&
+      (
+        question.includes("trigger") ||
+        question.includes("run") ||
+        question.includes("start")
+      )
+    ) {
+      return res.json(`
+    🚀 DevOps Action: Pipeline Execution
+    
+    ✅ Pipeline Triggered
+    
+    Project: ai-devops-agent
+    Branch: main
+    Status: Running...
+    
+    Logs:
+    ✔ Build started
+    ✔ Running tests
+    ✔ Deployment in progress
+    `);
+    }
+    
+    // DEPLOY
+    if (
+      question.includes("deploy")
+    ) {
+      return res.json(`
+    🚀 DevOps Action: Deployment
+    
+    🚀 Deployment Started
+    
+    Environment: Production
+    Status: Deploying...
+    
+    Steps:
+    ✔ Build complete
+    ✔ Containers created
+    ✔ Deployment in progress
+    `);
+    }
+    
+    // ROLLBACK
+    if (
+      question.includes("rollback") ||
+      question.includes("revert")
+    ) {
+      return res.json(`
+    ⏪ DevOps Action: Rollback
+    
+    ⏪ Rollback Initiated
+    
+    Target Version: Previous stable release
+    Status: Rolling back...
+    
+    ✔ Reverting deployment
+    ✔ Restarting services
+    ✔ System stable
+    `);
+    }
   // 🤖 AI FALLBACK (REAL AI)
 
   try {
