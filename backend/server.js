@@ -16,47 +16,40 @@ app.get("/", (req, res) => {
   res.send("AI DevOps Agent Running 🚀");
 });
 
-app.post("/ask", (req, res) => {
+app.post("/ask", async (req, res) => {
 
-    const question = req.body.question.toLowerCase();
-  
-    if(question.includes("pipeline")){
-        res.json("To trigger a GitLab pipeline you can use GitLab CI/CD or the GitLab API.");
-    }
-    else if(question.includes("deploy")){
-        res.json("Deployment started. The AI DevOps agent would trigger the deployment pipeline.");
-    }
-    else if(question.includes("merge request")){
-        res.json("Checking GitLab merge requests...");
-    }
-    else{
-        res.json("AI DevOps Agent received your request.");
-    }
-  
-  });
+  const question = req.body.question;
 
-// app.post("/ask", async (req, res) => {
+  try {
 
-//   const question = req.body.question;
+    const response = await openai.chat.completions.create({
+      model: "gpt-4.1-mini",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an expert DevOps assistant. Help with CI/CD pipelines, GitLab, deployments, Kubernetes, Docker, monitoring and troubleshooting."
+        },
+        {
+          role: "user",
+          content: question
+        }
+      ]
+    });
 
-//   try {
+    const answer = response.choices[0].message.content;
 
-//     const response = await openai.chat.completions.create({
-//       model: "gpt-4.1-mini",
-//       messages: [
-//         { role: "system", content: "You are a DevOps assistant." },
-//         { role: "user", content: question }
-//       ]
-//     });
+    res.json(answer);
 
-//     res.json(response.choices[0].message.content);
+  } catch (error) {
 
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("AI Error");
-//   }
+    console.error(error);
+    res.status(500).send("AI Error");
 
-// });
+  }
+
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
